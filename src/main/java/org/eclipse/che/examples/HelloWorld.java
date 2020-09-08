@@ -10,6 +10,8 @@ import java.util.Scanner;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -34,18 +36,28 @@ public class HelloWorld {
         while (stop != true) {
             System.out.println("Please insert your idea: ");
             final String name = scanner.nextLine();
-            if (!name.equals("end")) {
+            if (name.equals("end")) {
+                stop = true;
+                scanner.close();
+                mongoClient.close();
+            } else if (name.equals("show")) {
+                DBCursor query = collection.find();
+                while(query.hasNext()) {
+                    DBObject dbo = query.next();
+                    System.out.println(dbo.toString());
+                }
+                if(query !=null)
+                {
+                    query.close();
+                }   
+
+            } else {
                 final BasicDBObject idea = new BasicDBObject();
                 idea.put("id", name);
                 idea.put("idea", name);
                 collection.insert(idea);
                 System.out.println("Amount of ideas: " + collection.count());
-            } else {
-                stop = true;
-                scanner.close();
-                mongoClient.close();
             }
         }
-
     }
 }
