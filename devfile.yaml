@@ -62,12 +62,6 @@ components:
         name: JAVA_TOOL_OPTIONS
 apiVersion: 1.0.0
 commands:
-  - name: maven build
-    actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/console-java-simple'
-        type: exec
-        command: mvn clean install
-        component: maven
   - name: maven build and run
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}/console-java-simple'
